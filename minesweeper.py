@@ -17,8 +17,19 @@ class Game(tk.Tk):
     def generate_grid(self, event, canvas):
       for r in range(3):
         for c in range(4):
-          cell = tk.Button(canvas, command=lambda: self.hide_me(cell)).grid(row=r,column=c)
-          canvas.pack()
+            Cell(canvas, r, c)
+            # cell = tk.Button(canvas, command=lambda: self.hide_me(cell)).grid(row=r,column=c)
+            canvas.pack()
+
+class Cell():
+  def __init__(self, canvas, r, c):
+    super().__init__()
+    self.cell = tk.Button(canvas, command=lambda: self.hide_me(self.cell))
+    self.cell.grid(row=r,column=c)
+    
+  def hide_me(self, event):
+    print('hide me')
+    event.grid_forget()
 
 if __name__ == "__main__":
     Game().mainloop()
