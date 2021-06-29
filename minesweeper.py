@@ -1,23 +1,43 @@
-from tkinter import *
 import tkinter as tk
+from tkinter import *
+import random
 
 class Game(tk.Tk):
     def __init__(self):
         super().__init__()
-        canvas = tk.Canvas(self)
-        canvas.pack()
-        self.rows = 3
-        self.columns = 4
-        self.startGame = tk.Button(canvas, text="Start", background='white', font=("Helvetica"),
-                                   command=lambda: self.generate_grid(self.startGame, canvas))
+        menu = tk.Canvas(self, height=30)
+        game_area = tk.Canvas(self)
+        menu.pack(side=TOP)
+        game_area.pack()
+        self.rows = 10
+        self.columns = 10
+        self.list = []
+        self.startGame = tk.Button(menu, text="Start", background='white', font=("Helvetica"),
+                                   command=lambda: self.generate_grid(self.startGame, game_area))
         self.startGame.place(x=150, y=0)
 
     def generate_grid(self, event, canvas):
       for r in range(self.rows):
+        row = []
         for c in range(self.columns):
-            tk.Label(canvas, text='R%s/C%s'%(r,c), borderwidth=1).grid(row=r,column=c,ipadx=8,ipady=14)
-            Cell(canvas, r, c)
-            canvas.pack()
+          if random.random() < 0.5:
+            row.append([False,0])
+            # tk.Label(canvas, text='R%s/C%s'%(r,c), borderwidth=1).grid(row=r, column=c, ipadx=8, ipady=14)
+          else: 
+            row.append([True,0])
+            # tk.Label(canvas, text='X', borderwidth=1).grid(row=r, column=c, ipadx=20, ipady=14)
+          # Cell(canvas, r, c)
+          # canvas.pack()
+        self.list.append(row)
+      self.count_bombs(self)
+
+    def count_bombs(self, event):
+      for r in range(self.rows):
+        for c in range(self.columns):
+          if self.list[r][c][0] == True:
+            self.list[r][c][1] += 1
+            print(self.list[r][c])
+      print(self.list)
 
 class Cell():
   def __init__(self, canvas, r, c):
